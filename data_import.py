@@ -1,3 +1,4 @@
+#%% Preliminaries ---------------------------------------------------------------------------------
 import os
 import pandas as pd
 import numpy as np
@@ -7,6 +8,7 @@ from fredapi import Fred
 
 # Set path to working directory of this script file
 path_file = os.path.dirname(os.path.abspath(__file__))
+os.chdir(path_file)
 
 
 #%% Import Data -----------------------------------------------------------------------------------
@@ -69,7 +71,8 @@ df.to_csv('full_data.csv')
 
 
 #%% Notes -----------------------------------------------------------------------------------------
-# FRED series to include: 'GDPC1'
+# References:
+    # https://mortada.net/python-api-for-fred.html
 
 # TODO: Adjust get_FRED_data() fn. to normalize different series frequencies by introducing NA values
-# TODO: Add FRED data to the final concatenated dataframe "df" before exporting
+# TODO: Add FRED data to the final concatenated dataframe 'df' before exporting
