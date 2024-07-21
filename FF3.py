@@ -7,6 +7,11 @@ import numpy as np
 import yfinance as yf
 
 def get_SPX_data(start, end=None, save = False, fetch = True):
+    # start is the beginning date of the data download 
+    # end is the ending data of the data download 
+    # save is a binary variable indicating if the data is saved locally 
+    # fetch is a binary variable indicating if the data is pulled locally
+
     if fetch == True:
         # get tickers 
         SPX_tickers = pd.read_html(
@@ -18,6 +23,8 @@ def get_SPX_data(start, end=None, save = False, fetch = True):
         try:
             # download monthly data 
             data = yf.download(SPX_tickers_list, start=start, end=end, group_by='ticker', interval = "1mo")
+            # TO DO: Need to better organize data for panel regression & CSV local save 
+                # CONSIDER: pkl instead of CSV?
 
             if save == True: 
                 data.to_csv('spxdata.csv')
