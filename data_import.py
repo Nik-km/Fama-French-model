@@ -21,6 +21,23 @@ print(df_SP.head())
 # Extract the date of the first observation
 start_date = datetime.strftime(df_SP.index[0], '%m/%d/%Y'); start_date
 
+#>> Associate Ticker with Sector  
+SPX_companys = pd.read_html(
+    'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0]
+SPX_tickers = SPX_companys['Symbol'].str.replace('.', '-').tolist()
+SPX_tickers.append("^SPX") # tickers to pull data from Yahoo Finance 
+
+stock_industry = {}
+
+for ticker in SPX_tickers:
+    sector = yahooFinance.Ticker(ticker).info['sector']
+    stock_industry[ticker] = sector
+
+#>> Download All S&P 500 stocks
+data = yf.download(SPX_tickers, interval = '1mo', start = start_date, end = end_date)
+data['Close'].to_csv('individual_stocks.csv') # used Close but also have Open, Adjust Close, High, Low /month 
+
+
 #>> Import Ken French's data directly
 url_FF5 = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip"
 df_FF5 = pd.read_csv(url_FF5, compression="zip", skiprows=3)
@@ -76,3 +93,4 @@ df.to_csv('full_data.csv')
 
 # TODO: Adjust get_FRED_data() fn. to normalize different series frequencies by introducing NA values
 # TODO: Add FRED data to the final concatenated dataframe 'df' before exporting
+# TODO: Pickle dictionary to move between files in "Associate Ticker with Sector"
