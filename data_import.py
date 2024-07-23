@@ -26,18 +26,31 @@ SPX_companys = pd.read_html(
     'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0]
 SPX_tickers = SPX_companys['Symbol'].str.replace('.', '-').tolist()
  
-
-stock_industry = {}
+ticker_list = []
+sector_list = []
 
 for ticker in SPX_tickers:
+    ticker_list.append(ticker)
     sector = yahooFinance.Ticker(ticker).info['sector']
-    stock_industry[ticker] = sector
-
+    sector_list.append(sector)
+    
+stock_industry = pd.DataFrame({'ticker': ticker_list, 'sector': sector_list})
 print(stock_industry)
 
+#%% 
 #>> Download All S&P 500 stocks
-data = yahooFinance.download(SPX_tickers, interval = '1mo', start = '1990-01-01')
-data['Close'].to_csv('individual_stocks.csv') # used Close but also have Open, Adjust Close, High, Low /month 
+# Run if update needed 
+#data = yahooFinance.download(SPX_tickers, interval = '1mo', start = '1990-01-01')
+#data['Close'].to_csv('individual_stocks.csv') # used Close but also have Open, Adjust Close, High, Low /month 
+
+# Run above if data is not downloaded
+SPX_constituents = pd.read_csv('individual_stocks.csv')
+SPX_constituents = pd.melt(SPX_constituents,id_vars = ['Date'])
+SPX_constituents = SPX_constituents.rename(columns={'variable':'ticker', 'value':'closing-price'})
+
+#TO DO: MERGE SPX_Constitutents & Stock_Industry
+
+#%%
 
 
 #>> Import Ken French's data directly
