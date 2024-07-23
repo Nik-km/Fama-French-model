@@ -48,8 +48,10 @@ SPX_constituents = pd.read_csv('individual_stocks.csv')
 SPX_constituents = pd.melt(SPX_constituents,id_vars = ['Date'])
 SPX_constituents = SPX_constituents.rename(columns={'variable':'ticker', 'value':'closing-price'})
 
-#TO DO: MERGE SPX_Constitutents & Stock_Industry
+#Merge Into Single Dataframe & Save
 
+SPX_constituents_clean = pd.merge(SPX_constituents,stock_industry, on='ticker')
+SPX_constituents_clean.to_csv('individual_stocks_clean.csv')
 #%%
 
 
