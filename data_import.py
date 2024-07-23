@@ -25,7 +25,7 @@ start_date = datetime.strftime(df_SP.index[0], '%m/%d/%Y'); start_date
 SPX_companys = pd.read_html(
     'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0]
 SPX_tickers = SPX_companys['Symbol'].str.replace('.', '-').tolist()
-SPX_tickers.append("^SPX") # tickers to pull data from Yahoo Finance 
+ 
 
 stock_industry = {}
 
@@ -33,8 +33,10 @@ for ticker in SPX_tickers:
     sector = yahooFinance.Ticker(ticker).info['sector']
     stock_industry[ticker] = sector
 
+print(stock_industry)
+
 #>> Download All S&P 500 stocks
-data = yf.download(SPX_tickers, interval = '1mo', start = start_date, end = end_date)
+data = yahooFinance.download(SPX_tickers, interval = '1mo', start = '1990-01-01')
 data['Close'].to_csv('individual_stocks.csv') # used Close but also have Open, Adjust Close, High, Low /month 
 
 
