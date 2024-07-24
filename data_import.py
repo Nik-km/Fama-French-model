@@ -12,12 +12,15 @@ os.chdir(path_file)
 
 
 #%% Import Data -----------------------------------------------------------------------------------
+
 #>> Load stock returns (Date, Ticker, and Return columns)
 df_SP = yahooFinance.Ticker("^GSPC").history(start='1990-01-01', interval='1mo', actions=True)
+
 # Compute monthly log returns
 df_SP["Returns"] = np.log(df_SP["Close"]/df_SP["Close"].shift(1))
 df_SP = df_SP[["Close", "Volume", "Returns"]]
 print(df_SP.head())
+
 # Extract the date of the first observation
 start_date = datetime.strftime(df_SP.index[0], '%m/%d/%Y'); start_date
 
@@ -35,27 +38,60 @@ for ticker in SPX_tickers:
     sector_list.append(sector)
     
 stock_industry = pd.DataFrame({'ticker': ticker_list, 'sector': sector_list})
-print(stock_industry)
+
 
 #%% 
 #>> Download All S&P 500 stocks
 # Run if update needed 
-#data = yahooFinance.download(SPX_tickers, interval = '1mo', start = '1990-01-01')
-#data['Close'].to_csv('individual_stocks.csv') # used Close but also have Open, Adjust Close, High, Low /month 
+# data = yahooFinance.download(SPX_tickers, interval = '1mo', start = '1990-01-01')
+# data['Close'].to_csv('individual_stocks.csv') # used Close but also have Open, Adjust Close, High, Low /month 
 
 # Run above if data is not downloaded
 SPX_constituents = pd.read_csv('individual_stocks.csv')
+
 SPX_constituents = pd.melt(SPX_constituents,id_vars = ['Date'])
 SPX_constituents = SPX_constituents.rename(columns={'variable':'ticker', 'value':'closing-price'})
 
-#Merge Into Single Dataframe & Save
-
+# Merge Into Single Dataframe & Save
 SPX_constituents_clean = pd.merge(SPX_constituents,stock_industry, on='ticker')
+SPX_constituents_clean['returns'] = np.log(SPX_constituents_clean['closing-price']/SPX_constituents_clean['closing-price'].shift(1))
+
 SPX_constituents_clean.to_csv('individual_stocks_clean.csv')
 #%%
 
+#%%
+#>> Create Sector Portfolios 
+#SPX_constituents_clean = SPX_constituents_clean.set_index('Date')
 
-#>> Import Ken French's data directly
+sectors = SPX_constituents_clean['sector'].unique().tolist()
+
+portfolios = pd.DataFrame()
+
+for sector in sectors: 
+
+    temp_sector_dataframe = SPX_constituents_clean[SPX_constituents_clean['sector'] == sector]
+
+    tickers_in_sector = temp_sector_dataframe['ticker'].unique().tolist()
+
+    sector_portfolio = pd.DataFrame() 
+
+    for tk in tickers_in_sector: 
+
+        ticker_data = temp_sector_dataframe[temp_sector_dataframe['ticker'] == tk]
+
+        sector_portfolio[tk] = ticker_data['returns']
+        
+    sector_portfolio.to_csv('PortfolioValidation\\'+str(sector)+'-sector_portfolio.csv')
+    portfolios[sector] = sector_portfolio.mean(axis=1)
+
+portfolios.to_csv('industry_portfolios.csv')
+
+#%% 
+
+    
+
+
+#>> Import Ken French's Data Directly
 url_FF5 = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip"
 df_FF5 = pd.read_csv(url_FF5, compression="zip", skiprows=3)
 print(df_FF5.head())
@@ -110,4 +146,3 @@ df.to_csv('full_data.csv')
 
 # TODO: Adjust get_FRED_data() fn. to normalize different series frequencies by introducing NA values
 # TODO: Add FRED data to the final concatenated dataframe 'df' before exporting
-# TODO: Pickle dictionary to move between files in "Associate Ticker with Sector"
