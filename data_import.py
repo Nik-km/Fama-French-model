@@ -101,7 +101,7 @@ df["excess_return"] = df["Returns"] - (df["RF"] / 100)
 # Drop any rows with missing values
 df = df.dropna()
 
-df.to_csv('full_data.csv')
+df.to_csv('/data/full_data.csv')
 
 
 #%% Notes -----------------------------------------------------------------------------------------
