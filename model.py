@@ -93,6 +93,29 @@ def gen_QQ_plot(mod_res):
 
 gen_QQ_plot(model.resid)
 
+#>> Partial Regression Plots
+# Residual plots
+fig = plt.figure(figsize=(12,8))
+fig = sm.graphics.plot_partregress_grid(model, fig=fig)
+fig.savefig(path_file + "\\output\\partial_reg_plots.png")
+fig
+
+#>> Residuals vs. Fitted Plot
+with plt.style.context('ggplot'):
+    plt.figure(figsize=(9,6))
+    plt.scatter(model.fittedvalues, model.resid, color='orange')
+    plt.xlabel('Predicted Value')
+    plt.ylabel('Residual')
+    plt.title('Residual by Predicted')
+    plt.axhline(y = 0, color = 'black', linestyle = '-') 
+    plt.gca().set_facecolor('white')    # (0.95, 0.95, 0.95)
+    plt.gca().spines['top'].set_color('black')
+    plt.gca().spines['bottom'].set_color('black')
+    plt.gca().spines['left'].set_color('black')
+    plt.gca().spines['right'].set_color('black')
+    plt.savefig(path_file + "\\output\\fitted_res_plot.png")
+    plt.show()
+
 
 #%% Notes -----------------------------------------------------------------------------------------
 # References:
@@ -103,3 +126,17 @@ gen_QQ_plot(model.resid)
 # HML is the return spread of cheap minus expensive stocks (i.e. the value effect)
 # RMW is the return spread of the most profitable firms minus the least profitable
 # CMA is the return spread of firms that invest conservatively minus aggressively (AQR, 2014)
+
+#>> Partial Regression Plots
+# Ideally, this plot should show a linear trend, but from the graph it shows that there doesn't seem to be
+# divergence of the trends for each covariate. This also further implies that the expected value of the
+# residuals does equal zero.
+# The partial regression plots do not show any departures from the assumptions on the random error for
+# Mkt-RF, SMB, & HML
+
+#>> Residuals vs. Fitted Plot
+# Checking whether the residuals and fitted values are correlated, ideally, this plot should show a band
+# of random scattering about when the residuals equal zero (ie. about the horizontal axis). Since there
+# seems to be a exponential pattern of the residuals in this plot, this implies that the variance of the
+# residuals is not constant, which means that one or more of our model's assumptions is violated as well.
+
