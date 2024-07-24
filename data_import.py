@@ -13,13 +13,16 @@ os.chdir(path_file)
 
 #%% Import Data -----------------------------------------------------------------------------------
 #>> Load stock returns (Date, Ticker, and Return columns)
-df_SP = yahooFinance.Ticker("^GSPC").history(start='1990-01-01', interval='1mo', actions=True)
+df_SP = yahooFinance.Ticker("^SPX").history(start='1990-01-01', interval='1mo', actions=True)
 # Compute monthly log returns
 df_SP["Returns"] = np.log(df_SP["Close"]/df_SP["Close"].shift(1))
 df_SP = df_SP[["Close", "Volume", "Returns"]]
 print(df_SP.head())
 # Extract the date of the first observation
 start_date = datetime.strftime(df_SP.index[0], '%m/%d/%Y'); start_date
+
+yahooFinance.Ticker("AAPL").info["sector"]
+
 
 #>> Import Ken French's data directly
 url_FF5 = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip"
@@ -63,7 +66,7 @@ df_FRED
 
 #>> Combine data series & compute excess returns
 df = df_FF5.join(df_SP, how='inner')
-df["excess_return"] = df["Returns"] - df["RF"] / 100
+df["excess_return"] = df["Returns"] - (df["RF"] / 100)
 # Drop any rows with missing values
 df = df.dropna()
 

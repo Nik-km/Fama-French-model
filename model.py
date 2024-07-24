@@ -14,7 +14,7 @@ df = pd.read_csv("full_data.csv", index_col='Date')
 
 #%% Build Model(s) --------------------------------------------------------------------------------
 # Define the independent variables (Fama-French factors)
-X = df[['Mkt-RF', 'SMB', 'HML', 'RMW', 'CMA']]
+X = df[['Mkt-RF', 'SMB', 'HML']]
 # Add a constant (intercept) to the model
 X = sm.add_constant(X)
 # Define the dependent variable (Excess Return)
@@ -23,9 +23,11 @@ y = df['excess_return']
 # Perform the regression
 model = sm.OLS(y, X).fit()
 reg_summary = model.summary()
+reg_summary
 
 # Uncomment to get LaTeX output
-# model.summary().as_latex()
+output = model.summary().as_latex()
+print(output)
 
 
 #%% Notes -----------------------------------------------------------------------------------------
