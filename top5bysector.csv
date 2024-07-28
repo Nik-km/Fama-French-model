@@ -1,0 +1,51 @@
+,ticker,name,sector,market capitalization
+0,LLY,Eli Lilly and Company,Healthcare,724483.833856
+1,UNH,UnitedHealth Group Incorporated,Healthcare,524361.728
+2,JNJ,Johnson & Johnson,Healthcare,386699.034624
+3,ABBV,AbbVie Inc.,Healthcare,326968.475648
+4,MRK,"Merck & Co., Inc.",Healthcare,317259.776
+5,AAPL,Apple Inc.,Technology,3342220.65664
+6,MSFT,Microsoft Corporation,Technology,3160738.36544
+7,NVDA,NVIDIA Corporation,Technology,2781083.860992
+8,AVGO,Broadcom Inc.,Technology,705819.4432
+9,ORCL,Oracle Corporation,Technology,383092.064256
+10,NEE,"NextEra Energy, Inc.",Utilities,152630.296576
+11,SO,The Southern Company,Utilities,89847.144448
+12,DUK,Duke Energy Corporation,Utilities,83374.20288
+13,CEG,Constellation Energy Corporation,Utilities,55178.735616
+14,AEP,"American Electric Power Company, Inc.",Utilities,50840.911872
+15,BRK-B,Berkshire Hathaway Inc.,Financial Services,943630.057472
+16,JPM,JPMorgan Chase & Co.,Financial Services,603844.050944
+17,V,Visa Inc.,Financial Services,504878.03904
+18,MA,Mastercard Incorporated,Financial Services,407338.68032
+19,BAC,Bank of America Corporation,Financial Services,323973.840896
+20,LIN,Linde plc,Basic Materials,216990.400512
+21,SHW,The Sherwin-Williams Company,Basic Materials,88093.540352
+22,ECL,Ecolab Inc.,Basic Materials,70033.186816
+23,FCX,Freeport-McMoRan Inc.,Basic Materials,64642.048
+24,APD,"Air Products and Chemicals, Inc.",Basic Materials,58017.42336
+25,AMZN,"Amazon.com, Inc.",Consumer Cyclical,1899204.44416
+26,TSLA,"Tesla, Inc.",Consumer Cyclical,702181.86752
+27,HD,"The Home Depot, Inc.",Consumer Cyclical,356495.163392
+28,MCD,McDonald's Corporation,Consumer Cyclical,181611.855872
+29,LOW,"Lowe's Companies, Inc.",Consumer Cyclical,136116.486144
+30,PLD,"Prologis, Inc.",Real Estate,113582.538752
+31,AMT,American Tower Corporation,Real Estate,99801.899008
+32,EQIX,"Equinix, Inc.",Real Estate,73308.004352
+33,WELL,Welltower Inc.,Real Estate,65639.223296
+34,SPG,"Simon Property Group, Inc.",Real Estate,57136.431104
+35,GOOG,Alphabet Inc.,Communication Services,2065216.569344
+36,GOOGL,Alphabet Inc.,Communication Services,2065105.289216
+37,META,"Meta Platforms, Inc.",Communication Services,1181262.020608
+38,NFLX,"Netflix, Inc.",Communication Services,270961.901568
+39,TMUS,"T-Mobile US, Inc.",Communication Services,206268.809216
+40,WMT,Walmart Inc.,Consumer Defensive,561278.222336
+41,PG,The Procter & Gamble Company,Consumer Defensive,399123.283968
+42,COST,Costco Wholesale Corporation,Consumer Defensive,362470.703104
+43,KO,The Coca-Cola Company,Consumer Defensive,288915.78368
+44,PEP,"PepsiCo, Inc.",Consumer Defensive,237284.22912
+45,XOM,Exxon Mobil Corporation,Energy,526334.164992
+46,CVX,Chevron Corporation,Energy,288657.801216
+47,COP,ConocoPhillips,Energy,129075.412992
+48,EOG,"EOG Resources, Inc.",Energy,73074.499584
+49,SLB,Schlumberger Limited,Energy,69330.788352

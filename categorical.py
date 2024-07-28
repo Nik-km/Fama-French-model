@@ -21,9 +21,16 @@ df = df.drop(['Unnamed: 0'], axis = 1)
 
 sectors = df['sector'].unique()
 
-for sector in sectors: 
+top5bysector = df[df['sector'] == 'industrials'].nlargest(5, 'market capitalization')
+
+for sector in sectors[1:]: 
     top = df[df['sector'] == sector].nlargest(5, 'market capitalization')
-    print(top)
+    #top.to_csv('Top5\\'+str(sector)+'-top 5.csv')
+    print(sector, '\n', top, '\n')
+
+    top5bysector = pd.concat([top5bysector, top], ignore_index=True)
+
+top5bysector.to_csv('top5bysector.csv')
 
 
 
