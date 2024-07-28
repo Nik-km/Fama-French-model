@@ -40,6 +40,8 @@ industry_results = {}
 for industry in df_ind.columns: 
     model = sm.OLS(df_ind[industry],X).fit()
     industry_results[industry] = model
+    print('-'*10, industry, '-'*10)
+    print(model.summary().as_latex())
 
 
 
