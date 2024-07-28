@@ -32,14 +32,27 @@ SPX_tickers = SPX_companys['Symbol'].str.replace('.', '-').tolist()
  
 ticker_list = []
 sector_list = []
+market_capitalization_list = []
+name_list = []
 
 for ticker in SPX_tickers:
     ticker_list.append(ticker)
-    sector = yahooFinance.Ticker(ticker).info['sector']
+    yFdata = yahooFinance.Ticker(ticker)
+    
+    sector = yFdata.info['sector']
     sector_list.append(sector)
     
+    market_cap = yFdata.info['marketCap']
+    market_capitalization_list.append(market_cap/1000000)
+
+    name = yFdata.info['longName']
+    name_list.append(name)
+
+
 stock_industry = pd.DataFrame({'ticker': ticker_list, 'sector': sector_list})
 
+stock_categorical = pd.DataFrame({'ticker': ticker_list, 'name':name_list, 'sector': sector_list, 'market capitalization': market_capitalization_list})
+stock_categorical.to_csv('categorical_stock_data.csv')
 
 #%% 
 #>> Download All S&P 500 stocks
