@@ -15,7 +15,7 @@ os.chdir(path_file)
 
 #>> Load stock returns (Date, Ticker, and Return columns)
 df_SP = yahooFinance.Ticker("^SPX").history(start='1990-01-01', interval='1mo', actions=True)
-df_SP = yahooFinance.Ticker("^GSPC").history(start='1990-01-01', interval='1mo', actions=True)
+#df_SP = yahooFinance.Ticker("^GSPC").history(start='1990-01-01', interval='1mo', actions=True)
 
 # Compute monthly log returns
 df_SP["Returns"] = np.log(df_SP["Close"]/df_SP["Close"].shift(1))
@@ -44,7 +44,7 @@ stock_industry = pd.DataFrame({'ticker': ticker_list, 'sector': sector_list})
 #%% 
 #>> Download All S&P 500 stocks
 # Run if update needed 
-data = yahooFinance.download(SPX_tickers, interval = '1mo', start = '1990-01-01')
+data = yahooFinance.download(SPX_tickers, interval = '1mo', start = '1990-01-01', end = '2024-06-01')
 close_data = data['Close']
 
 for ticker in SPX_tickers: 
@@ -88,9 +88,8 @@ for sector in sectors:
         
     sector_portfolio.to_csv('PortfolioValidation\\'+str(sector)+'-sector_portfolio.csv')
     portfolios[sector] = sector_portfolio.mean(axis=1)
-
+portfolios = portfolios.drop(['1990-01-01'])
 portfolios.to_csv('industry_portfolios.csv')
-
 #%% 
 
 #>> Import Ken French's Data Directly

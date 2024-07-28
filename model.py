@@ -14,6 +14,8 @@ os.chdir(path_file)
 # Data import
 df = pd.read_csv("full_data.csv", index_col='Date')
 
+df_ind = pd.read_csv('industry_portfolios.csv', index_col= 'Date')
+
 
 #%% Build Model(s) --------------------------------------------------------------------------------
 # Define the independent variables (Fama-French factors)
@@ -31,6 +33,14 @@ reg_summary
 # Uncomment to get LaTeX output
 # output = model.summary().as_latex()
 # print(output)
+
+industry_results = {}
+
+# Run industry models 
+for industry in df_ind.columns: 
+    model = sm.OLS(df_ind[industry],X).fit()
+    industry_results[industry] = model
+
 
 
 #%% Diagnostic Tests ------------------------------------------------------------------------------
