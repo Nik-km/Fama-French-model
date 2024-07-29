@@ -3,9 +3,11 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
+import statsmodels.stats.stattools as smt
+import statsmodels.stats.descriptivestats as smd
 import scipy.stats as stats
+from stargazer.stargazer import Stargazer, LineLocation
 
 # Set path to working directory of this script file
 path_file = os.path.dirname(os.path.abspath(__file__))
@@ -31,18 +33,40 @@ reg_summary = model.summary()
 reg_summary
 
 # Uncomment to get LaTeX output
-# output = model.summary().as_latex()
-# print(output)
+output = model.summary().as_latex()
+print(output)
 
+#>> Fama-French 5 Factor Model
+# Define the independent variables (Fama-French factors)
+X = df[['Mkt-RF', 'SMB', 'HML', 'RMW', 'CMA']]
+X = sm.add_constant(X)
+y = df['excess_return']
+
+# Perform the regression
+model = sm.OLS(y, X).fit()
+model.summary()
+
+# Uncomment to get LaTeX output
+print(model.summary().as_latex())
+
+#>> Sector Regressions
 industry_results = {}
 
-# Run industry models 
+# Run industry models
 for industry in df_ind.columns: 
     model = sm.OLS(df_ind[industry],X).fit()
     industry_results[industry] = model
     print('-'*10, industry, '-'*10)
-    print(model.summary().as_latex())
+    # print(model.summary().as_latex())
 
+# Printout LaTeX table of sector regressions
+mod_sectors = [industry_results['Technology'], industry_results['Energy'], industry_results['Financial Services']]
+stargazer = Stargazer(mod_sectors)
+stargazer.add_line('AIC', [mod_sectors[0].aic.round(2), mod_sectors[1].aic.round(2), mod_sectors[2].aic.round(2)], LineLocation.FOOTER_TOP)
+stargazer.add_line('Skew', [smt.jarque_bera(mod_sectors[0].resid)[2].round(4), smt.jarque_bera(mod_sectors[1].resid)[2].round(4), smt.jarque_bera(mod_sectors[2].resid)[2].round(4)], LineLocation.FOOTER_TOP)
+stargazer.add_line('Kurtosis', [smt.jarque_bera(mod_sectors[0].resid)[3].round(2), smt.jarque_bera(mod_sectors[1].resid)[3].round(2), smt.jarque_bera(mod_sectors[2].resid)[3].round(2)], LineLocation.FOOTER_TOP)
+stargazer.add_line('Durbin-Watson', [smt.durbin_watson(mod_sectors[0].resid).round(3), smt.durbin_watson(mod_sectors[1].resid).round(3), smt.durbin_watson(mod_sectors[2].resid).round(3)], LineLocation.FOOTER_TOP)
+print(stargazer.render_latex())
 
 
 #%% Diagnostic Tests ------------------------------------------------------------------------------
@@ -114,7 +138,7 @@ fig
 
 #>> Residuals vs. Fitted Plot
 with plt.style.context('ggplot'):
-    plt.figure(figsize=(9,6))
+    plt.figure(figsize=(9,9))
     plt.scatter(model.fittedvalues, model.resid, color='orange')
     plt.xlabel('Predicted Value')
     plt.ylabel('Residual')
@@ -127,6 +151,23 @@ with plt.style.context('ggplot'):
     plt.gca().spines['right'].set_color('black')
     plt.savefig(path_file + "\\output\\fitted_res_plot.png")
     plt.show()
+
+#>> Scale-Location Plot
+with plt.style.context('ggplot'):
+    plt.figure(figsize=(9,9))
+    plt.scatter(model.fittedvalues, np.sqrt(model.resid), color='orange')
+    plt.xlabel('Predicted Values')
+    plt.ylabel('Standardized Residuals')
+    plt.title('Scale-Location')
+    plt.gca().set_facecolor('white')    # (0.95, 0.95, 0.95)
+    plt.gca().spines['top'].set_color('black')
+    plt.gca().spines['bottom'].set_color('black')
+    plt.gca().spines['left'].set_color('black')
+    plt.gca().spines['right'].set_color('black')
+    plt.savefig(path_file + "\\output\\scale_location.png")
+    plt.show()
+
+
 
 
 #%% Notes -----------------------------------------------------------------------------------------

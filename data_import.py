@@ -18,7 +18,7 @@ df_SP = yahooFinance.Ticker("^SPX").history(start='1990-01-01', interval='1mo', 
 #df_SP = yahooFinance.Ticker("^GSPC").history(start='1990-01-01', interval='1mo', actions=True)
 
 # Compute monthly log returns
-df_SP["Returns"] = np.log(df_SP["Close"]/df_SP["Close"].shift(1))
+df_SP["Returns"] = np.log(df_SP["Close"]/df_SP["Close"].shift(1)) * 100
 df_SP = df_SP[["Close", "Volume", "Returns"]]
 print(df_SP.head())
 
@@ -147,11 +147,12 @@ df_FRED
 
 #>> Combine data series & compute excess returns
 df = df_FF5.join(df_SP, how='inner')
-df["excess_return"] = df["Returns"] - (df["RF"] / 100)
+df["excess_return"] = df["Returns"] - df["RF"]
 # Drop any rows with missing values
 df = df.dropna()
 
-df.to_csv('/data/full_data.csv')
+df.to_csv(path_file + '\\full_data.csv')
+print("Completed.")
 
 
 #%% Notes -----------------------------------------------------------------------------------------
