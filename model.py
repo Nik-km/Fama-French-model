@@ -21,7 +21,7 @@ df_ind = pd.read_csv('industry_portfolios.csv', index_col= 'Date')
 
 #%% Build Model(s) --------------------------------------------------------------------------------
 # Define the independent variables (Fama-French factors)
-X = df[['Mkt-RF', 'SMB', 'HML']]
+X = df[['Mkt-RF', 'SMB', 'HML']]/100
 # Add a constant (intercept) to the model
 X = sm.add_constant(X)
 # Define the dependent variable (Excess Return)

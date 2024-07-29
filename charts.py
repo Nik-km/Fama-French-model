@@ -21,12 +21,17 @@ df = df.drop(['Unnamed: 0'], axis = 1)
 
 sectors = df['sector'].unique()
 
-top5bysector = df[df['sector'] == 'industrials'].nlargest(5, 'market capitalization')
+top5bysector = df[df['sector'] == 'Industrials']
 
-for sector in sectors[1:]: 
-    top = df[df['sector'] == sector].nlargest(5, 'market capitalization')
+print('Industrial', '\n', top5bysector.nlargest(5, 'market capitalization'), '\n')
+print('Number of Tickers: ', len(top5bysector['ticker']))
+
+for sector in sectors[1:]:
+    df_sub = df[df['sector'] == sector] 
+    top = df_sub.nlargest(5, 'market capitalization')
     #top.to_csv('Top5\\'+str(sector)+'-top 5.csv')
     print(sector, '\n', top, '\n')
+    print('Number of Tickers: ', len(df_sub['ticker']))
 
     top5bysector = pd.concat([top5bysector, top], ignore_index=True)
 
