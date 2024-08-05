@@ -13,9 +13,9 @@ os.chdir(path_file)
 
 # Data import
 
-df = pd.read_csv("categorical_stock_data.csv")
+df = pd.read_csv("data\\categorical_stock_data.csv")
 df = df.drop(['Unnamed: 0'], axis = 1)
-# %%
+
 
 #%% Categorical Charts 
 
@@ -36,7 +36,3 @@ for sector in sectors[1:]:
     top5bysector = pd.concat([top5bysector, top], ignore_index=True)
 
 top5bysector.to_csv('top5bysector.csv')
-
-
-
-# %%
